@@ -8,11 +8,11 @@ services:
     build:
       ./
     ports:
-      - '8080'
+      - 5500:5500
   app2:
     image: ""
     container_name: ""
     build:
       ./
     ports:
-      - '3000'
+      - 3000:3000

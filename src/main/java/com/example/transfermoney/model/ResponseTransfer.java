@@ -1,5 +1,8 @@
 package com.example.transfermoney.model;
 
+import lombok.Builder;
+
+@Builder
 public class ResponseTransfer {
     private String operationId;
 

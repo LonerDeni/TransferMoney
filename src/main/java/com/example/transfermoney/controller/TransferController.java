@@ -1,8 +1,6 @@
 package com.example.transfermoney.controller;
 
-import com.example.transfermoney.model.Confirm;
-import com.example.transfermoney.model.PayInfo;
-import com.example.transfermoney.model.ResponseTransfer;
+import com.example.transfermoney.model.*;
 import com.example.transfermoney.service.TransferService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,7 +14,6 @@ import javax.validation.Valid;
 public class TransferController {
 
     TransferService service;
-    //ConfirmService confirmService;
 
 
     public TransferController(TransferService service) {
@@ -25,12 +22,17 @@ public class TransferController {
 
 
     @PostMapping("/transfer")
-    public ResponseTransfer getAuthorities(@Valid @RequestBody PayInfo payInfo) {
-        return service.transferM(payInfo);
+    public ResponseTransfer addTransfer(@Valid @RequestBody PayInfo payInfo) {
+        return service.transferMoney(payInfo);
     }
 
     @PostMapping("/confirmOperation")
-    public ResponseTransfer getAuthorities(@Valid @RequestBody Confirm confirm) {
-        return service.confirmPay(confirm);
+    public ResponseTransfer checkOperation(@Valid @RequestBody Confirm confirm) {
+        TransactionInfo transactionInfo = service.confirmPay(confirm);
+        return ResponseTransfer.builder().operationId(transactionInfo.getUuid()).build();
+    }
+    @PostMapping("/addCard")
+    public String addCard(@Valid @RequestBody CreditCard creditCardCard) {
+        return service.addCard(creditCardCard);
     }
 }

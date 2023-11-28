@@ -11,25 +11,24 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import javax.validation.ConstraintViolationException;
-import java.util.List;
-import java.util.stream.Collectors;
-
 @ControllerAdvice
 public class ExceptionHandlerTransfer {
 
     @ResponseBody
-    @ExceptionHandler(InvalidData.class)
+    @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseError credentialsHandler(InvalidData e) {
         return new ResponseError(null,e.getMessage());
     }
 
     @ResponseBody
-    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ExceptionHandler({MethodArgumentNotValidException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseError argumentValidationException(
             MethodArgumentNotValidException e) {
+        if(e.getBindingResult().getErrorCount() > 0){
+            return new ResponseError(null,e.getBindingResult().getAllErrors().get(0).getDefaultMessage());
+        }
         return new ResponseError(null,e.getMessage());
     }
 }

@@ -1,16 +1,15 @@
 package com.example.transfermoney.model;
 
-import org.springframework.stereotype.Repository;
-import org.springframework.validation.annotation.Validated;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 
 public class Amount {
-
+    @NotNull(message = "Не задана сумма")
+    @Min(value = 0,message = "Сумма перевода не может быть меньше или равна нулю")
     private Double value;
-
+    @NotNull(message = "Не задана валюта")
     private String currency;
 
     public Amount(Double value, String currency) {
@@ -27,5 +26,10 @@ public class Amount {
 
     public String getCurrency() {
         return currency;
+    }
+
+    @Override
+    public String toString() {
+        return value.toString();
     }
 }
